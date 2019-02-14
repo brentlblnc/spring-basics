@@ -1,33 +1,34 @@
 package com.brent.spring.basics.springin5steps;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 
 import com.brent.spring.basics.springin5steps.basic.BinarySearchImpl;
+import com.brent.spring.basics.springin5steps.properties.SomeExternalService;
 
 @SpringBootApplication
-public class SpringIn5StepsBasicApplication {
+// app.properties
+@PropertySource("classpath:app.properties")
+public class SpringIn5StepsPropertiesApplication {
 
 	// What are the beans?
 	// What are the dependencies of a bean?
 	// Where to search for beans?
 	
+	private static Logger LOGGER = LoggerFactory.getLogger(SpringIn5StepsPropertiesApplication.class);
+	
 	public static void main(String[] args) {
 		//BinarySearchImpl binarySearch = new BinarySearchImpl(new QuickSortAlgorithm());
 
-		ApplicationContext applicationContext = SpringApplication.run(SpringIn5StepsBasicApplication.class, args);
-		BinarySearchImpl binarySearch 
-			= applicationContext.getBean(BinarySearchImpl.class);
+		ApplicationContext applicationContext = SpringApplication.run(SpringIn5StepsPropertiesApplication.class, args);
+		SomeExternalService someExtService 
+			= applicationContext.getBean(SomeExternalService.class);
 		
-		BinarySearchImpl binarySearch1
-		= applicationContext.getBean(BinarySearchImpl.class);
-		
-		System.out.println(binarySearch);
-		System.out.println(binarySearch1);
-		int result 
-			= binarySearch.binarySearch(new int[] {12, 4,  6}, 3);
-		System.out.println(result);
+		LOGGER.info("{}", someExtService.returnServiceURL());
 		
 //		Bean scope default - singleton
 //		- Singleton: one instance per spring context
